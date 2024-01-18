@@ -5,9 +5,10 @@ import {
   createTable,
   createRow,
 } from './createElement.js';
+import { getStorage } from './serviceStorage.js';
 
 export const renderTasks = (elem, data) => {
-  //data = getStorage('name');
+  data = getStorage('task');
   const allRow = data.map(createRow);
   elem.append(...allRow);
 

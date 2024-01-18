@@ -5,11 +5,12 @@ export const createTitle = () => {
   return title;
 };
 
-const createButton = (className, type, text) => {
+const createButton = (className, type, text, disabled = false) => {
   const button = document.createElement('button');
   button.className = className;
   button.textContent = text;
   button.type = type;
+  button.disabled = disabled;
 
   return button;
 };
@@ -19,11 +20,17 @@ export const createForm = () => {
   form.classList.add('d-flex', 'align-items-center', 'mb-3');
   form.insertAdjacentHTML(
     'beforeend',
-    `<label class="form-group me-3 mb-0">
-      <input type="text" class="form-control" placeholder="ввести задачу">
-    </label>`,
+    ` <input type="hidden" class="form-id" name="id">
+      <label class="form-group me-3 mb-0">
+        <input type="text" class="form-control" name="task" placeholder="ввести задачу">
+      </label>`,
   );
-  const saveBtn = createButton('btn btn-primary me-3', 'submit', 'Сохранить');
+  const saveBtn = createButton(
+    'btn btn-primary me-3',
+    'submit',
+    'Сохранить',
+    true,
+  );
   const resetBtn = createButton('btn btn-warning', 'reset', 'Очистить');
 
   form.append(saveBtn, resetBtn);
@@ -60,7 +67,7 @@ export const createTable = () => {
   return table;
 };
 
-export const createRow = ({ id, task, status }) => {
+export const createRow = ({ id, task }) => {
   const tr = document.createElement('tr');
   tr.classList.add('table-light');
   const btnDell = createButton('btn btn-danger me-2', 'button', 'Удалить');
@@ -72,7 +79,7 @@ export const createRow = ({ id, task, status }) => {
       <td class="task">
         ${task}
       </td>
-      <td>${status}</td>
+      <td>В процессе</td>
     `,
   );
   const tdBtns = document.createElement('td');
