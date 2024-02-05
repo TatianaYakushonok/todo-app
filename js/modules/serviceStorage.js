@@ -9,26 +9,35 @@ export const setStorage = (key, task) => {
   localStorage.setItem(key, JSON.stringify(dataTasks));
 };
 
-/* const sortStorage = (key) => {
-  const dataPhone = getStorage(key);
-  const sortData = dataPhone.sort((name1, name2) => {
-    const res = name1.name > name2.name ? 1 : -1;
-    return res;
-  });
-  localStorage.setItem(key, JSON.stringify(sortData));
-}; */
+export const editStorage = (key, taskId, taskName) => {
+  const dataTasks = getStorage(key);
+  const index = dataTasks.findIndex((item) => item.id === taskId);
+  if (index !== -1) {
+    dataTasks[index].task = taskName;
+  }
+  localStorage.setItem(key, JSON.stringify(dataTasks));
+};
+
+export const editStatusStorage = (key, taskId) => {
+  const dataTasks = getStorage(key);
+  const index = dataTasks.findIndex((item) => item.id === taskId);
+  if (index !== -1) {
+    dataTasks[index].status = 'Выполнена';
+  }
+  localStorage.setItem(key, JSON.stringify(dataTasks));
+};
 
 export const removeStorage = (key, task) => {
   const dataTasks = getStorage(key);
-  const index = dataTasks.findIndex((item) => item.task === task);
+  const index = dataTasks.findIndex((item) => item.id === task);
   if (index !== -1) {
     dataTasks.splice(index, 1);
   }
   localStorage.setItem(key, JSON.stringify(dataTasks));
 };
 
-export const addTaskData = (task) => {
-  setStorage('task', task);
-  const dataTasks = getStorage('task');
+export const addTaskData = (key, task) => {
+  setStorage(key, task);
+  const dataTasks = getStorage(key);
   dataTasks.push(task);
 };

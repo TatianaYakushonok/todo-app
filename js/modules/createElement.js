@@ -21,9 +21,16 @@ export const createForm = () => {
   form.insertAdjacentHTML(
     'beforeend',
     ` <input type="hidden" class="form-id" name="id">
-      <label class="form-group me-3 mb-0">
+      <label class="form-group me-3 mb-0 w-100">
         <input type="text" class="form-control" name="task" placeholder="ввести задачу">
-      </label>`,
+      </label>
+      <input type="hidden" class="form-status" name="status">
+      <select name="type" class="form-select me-3 mb-0 w-50">
+        <option value="Обычная">Обычная</option>
+        <option value="Важная">Важная</option>
+        <option value="Срочная">Срочная</option>
+      </select>
+      `,
   );
   const saveBtn = createButton(
     'btn btn-primary me-3',
@@ -67,24 +74,82 @@ export const createTable = () => {
   return table;
 };
 
-export const createRow = ({ id, task }) => {
-  const tr = document.createElement('tr');
-  tr.classList.add('table-light');
+export const createRow = ({ id, task, status, type }) => {
   const btnDell = createButton('btn btn-danger me-2', 'button', 'Удалить');
-  const btnSuccess = createButton('btn btn-success', 'button', 'Завершить');
+  const btnSuccess = createButton(
+    'btn btn-success me-2',
+    'button',
+    'Завершить',
+  );
+  const btnEdit = createButton('btn btn-secondary', 'button', 'Редактировать');
+
+  const tr = document.createElement('tr');
+  if (type === 'Обычная' && status === 'В процессе') {
+    tr.classList.add('table-light', 'table-row');
+  } else if (type === 'Важная' && status === 'В процессе') {
+    tr.classList.add('table-warning', 'table-row');
+  } else if (type === 'Срочная' && status === 'В процессе') {
+    tr.classList.add('table-danger', 'table-row');
+  }
+
+  if (status === 'Выполнена') {
+    tr.classList.add('table-success', 'table-row');
+  }
+  console.log(status);
+
+  const classTask =
+    status === 'В процессе' ? 'task' : 'text-decoration-line-through';
+  const statusTask = status === 'В процессе' ? 'В процессе' : 'Выполнена';
+
+  tr.setAttribute('data-id', id);
   tr.insertAdjacentHTML(
     'beforeend',
     `
       <td>${id}</td>
-      <td class="task">
+      <td class=${classTask}  contenteditable="true">
         ${task}
       </td>
-      <td>В процессе</td>
+      <td class="status">${statusTask}</td>
     `,
   );
+
   const tdBtns = document.createElement('td');
-  tdBtns.append(btnDell, btnSuccess);
+  tdBtns.append(btnDell, btnSuccess, btnEdit);
   tr.append(tdBtns);
 
   return tr;
+};
+
+export const createModal = () => {
+  const modal = document.createElement('div');
+  modal.classList.add('modal', 'fade');
+  modal.setAttribute('tabindex', '-1');
+  modal.setAttribute('id', 'userEnterModal');
+  //modal.setAttribute('aria-hidden', 'true');
+  modal.insertAdjacentHTML(
+    'beforeend',
+    `
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Добро пожаловать в приложение ToDo App</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+          </div>
+          <div class="modal-body">
+            <form class="user-form">
+              <label class="form-group me-3 mb-0">
+                Введите свое имя:
+                <input type="text" class="form-control form-user-name" name="name">
+              </label>
+            </form>
+          </div>
+          <div class="modal-footer">
+          <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Войти</button>
+          </div>
+        </div>
+      </div>
+    `,
+  );
+
+  return modal;
 };
