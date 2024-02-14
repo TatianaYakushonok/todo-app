@@ -18,11 +18,11 @@ export const editStorage = (key, taskId, taskName) => {
   localStorage.setItem(key, JSON.stringify(dataTasks));
 };
 
-export const editStatusStorage = (key, taskId) => {
+export const editStatusStorage = (key, taskId, statusTask) => {
   const dataTasks = getStorage(key);
   const index = dataTasks.findIndex((item) => item.id === taskId);
   if (index !== -1) {
-    dataTasks[index].status = 'Выполнена';
+    dataTasks[index].status = statusTask;
   }
   localStorage.setItem(key, JSON.stringify(dataTasks));
 };

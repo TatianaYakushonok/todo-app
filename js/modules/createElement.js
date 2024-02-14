@@ -95,18 +95,18 @@ export const createRow = ({ id, task, status, type }) => {
   if (status === 'Выполнена') {
     tr.classList.add('table-success', 'table-row');
   }
-  console.log(status);
 
   const classTask =
-    status === 'В процессе' ? 'task' : 'text-decoration-line-through';
+    status === 'В процессе' ? 'task' : 'task text-decoration-line-through';
   const statusTask = status === 'В процессе' ? 'В процессе' : 'Выполнена';
+  console.log(classTask);
 
   tr.setAttribute('data-id', id);
   tr.insertAdjacentHTML(
     'beforeend',
     `
       <td>${id}</td>
-      <td class=${classTask}  contenteditable="true">
+      <td class="${classTask}"  contenteditable="true">         
         ${task}
       </td>
       <td class="status">${statusTask}</td>

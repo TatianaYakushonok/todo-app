@@ -3,6 +3,7 @@ import {
   addTaskData,
   editStatusStorage,
   editStorage,
+  getStorage,
   removeStorage,
 } from './serviceStorage.js';
 
@@ -11,16 +12,15 @@ const addTaskPage = (task, list) => {
 };
 
 export const formControl = (key, form, list) => {
-  console.log(form.elements);
   form.task.addEventListener('change', () => {
     form.elements[4].disabled = false;
   });
   form.addEventListener('submit', (e) => {
     e.preventDefault();
     const id = Math.random().toString().substring(2, 10);
-    form.elements[0].value = id;
-    form.elements[2].value = 'В процессе';
-    const formData = new FormData(e.target);
+    const formData = new FormData(form);
+    formData.set('id', id);
+    formData.set('status', 'В процессе');
     const newTask = Object.fromEntries(formData);
     addTaskPage(newTask, list);
     addTaskData(key, newTask);
@@ -54,17 +54,49 @@ export const statusTaskControl = (key, list) => {
     const target = e.target;
     if (target.closest('.btn-success')) {
       const taskRow = target.closest('.table-row');
-      taskRow.classList.remove('table-light');
-      taskRow.classList.add('table-success', 'table-row');
+      const taskId = taskRow.dataset.id;
+      console.log(taskId);
 
       const task = taskRow.querySelector('.task');
-      task.classList.add('text-decoration-line-through');
+
+      const dataTask = getStorage(key);
+      let typeTask = '';
+      dataTask.map((task) => {
+        if (task.id === taskId) {
+          typeTask = task.type;
+        }
+      });
 
       const statusTask = taskRow.querySelector('.status');
-      statusTask.textContent = 'Выполнена';
+      if (statusTask.textContent === 'В процессе') {
+        statusTask.textContent = 'Выполнена';
+        if (typeTask === 'Обычная') {
+          taskRow.classList.remove('table-light', 'table-row');
+        }
+        if (typeTask === 'Важная') {
+          taskRow.classList.remove('table-warning', 'table-row');
+        }
+        if (typeTask === 'Срочная') {
+          taskRow.classList.remove('table-danger', 'table-row');
+        }
+        taskRow.classList.add('table-success', 'table-row');
+        task.classList.add('task', 'text-decoration-line-through');
+      } else {
+        statusTask.textContent = 'В процессе';
+        if (typeTask === 'Обычная') {
+          taskRow.classList.add('table-light', 'table-row');
+        }
+        if (typeTask === 'Важная') {
+          taskRow.classList.add('table-warning', 'table-row');
+        }
+        if (typeTask === 'Срочная') {
+          taskRow.classList.add('table-danger', 'table-row');
+        }
+        taskRow.classList.remove('table-success');
+        task.classList.remove('text-decoration-line-through');
+      }
 
-      const taskId = taskRow.dataset.id;
-      editStatusStorage(key, taskId);
+      editStatusStorage(key, taskId, statusTask.textContent);
     }
   });
 
