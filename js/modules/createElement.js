@@ -99,7 +99,6 @@ export const createRow = ({ id, task, status, type }) => {
   const classTask =
     status === 'В процессе' ? 'task' : 'task text-decoration-line-through';
   const statusTask = status === 'В процессе' ? 'В процессе' : 'Выполнена';
-  console.log(classTask);
 
   tr.setAttribute('data-id', id);
   tr.insertAdjacentHTML(
@@ -125,7 +124,6 @@ export const createModal = () => {
   modal.classList.add('modal', 'fade');
   modal.setAttribute('tabindex', '-1');
   modal.setAttribute('id', 'userEnterModal');
-  //modal.setAttribute('aria-hidden', 'true');
   modal.insertAdjacentHTML(
     'beforeend',
     `

@@ -9,7 +9,6 @@ import { getStorage } from './modules/serviceStorage.js';
 
 const init = (selectorApp) => {
   const app = document.querySelector(selectorApp);
-  //const userName = prompt('Введите ваше имя');
   const { modal, form, list } = renderTodoApp(app);
   const userModal = new bootstrap.Modal('#userEnterModal');
   userModal.show();
