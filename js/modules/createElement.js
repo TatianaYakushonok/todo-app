@@ -74,7 +74,7 @@ export const createTable = () => {
   return table;
 };
 
-export const createRow = ({ id, task, status, type }) => {
+export const createRow = ({ id, task, status, type, num }) => {
   const btnDell = createButton('btn btn-danger me-2', 'button', 'Удалить');
   const btnSuccess = createButton(
     'btn btn-success me-2',
@@ -104,7 +104,7 @@ export const createRow = ({ id, task, status, type }) => {
   tr.insertAdjacentHTML(
     'beforeend',
     `
-      <td>${id}</td>
+      <td>${num}</td>
       <td class="${classTask}"  contenteditable="true">         
         ${task}
       </td>
