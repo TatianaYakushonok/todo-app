@@ -19,14 +19,12 @@ export const formControl = (key, form, list) => {
     e.preventDefault();
     const id = Math.random().toString().substring(2, 10);
     const dataTasks = getStorage(key);
-    let num = 0;
-    dataTasks.map((tasks, ind) => (num = ind + 1));
+    const num = dataTasks.length + 1;
     const formData = new FormData(form);
     formData.set('id', id);
     formData.set('status', 'В процессе');
     formData.set('num', num);
     const newTask = Object.fromEntries(formData);
-    newTask.num = num + 1;
     addTaskPage(newTask, list);
     addTaskData(key, newTask);
     form.elements[4].disabled = true;
