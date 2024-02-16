@@ -60,7 +60,6 @@ export const statusTaskControl = (key, list) => {
     if (target.closest('.btn-success')) {
       const taskRow = target.closest('.table-row');
       const taskId = taskRow.dataset.id;
-      console.log(taskId);
 
       const task = taskRow.querySelector('.task');
 
